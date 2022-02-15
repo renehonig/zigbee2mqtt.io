@@ -48,6 +48,9 @@ Published messages are **always** in a JSON format. Each device produces a diffe
 }
 ```
 
+## zigbee2mqtt/FRIENDLY_NAME/availabilty
+If ["Device-Availability"](../configuration/device-availability.md) is configured the online/offline status will be published when it changes.
+
 ## zigbee2mqtt/FRIENDLY_NAME/set
 Publishing messages to this topic allows you to control your Zigbee devices via MQTT. Only accepts JSON messages. An example to control a Philips Hue Go (7146060PH). How to control a specific device can be found in the *Exposes* section on the device page which can be accessed via ["Supported devices"](../../supported-devices/).
 
@@ -98,7 +101,7 @@ Example payload:
 ```
 
 ## zigbee2mqtt/bridge/state
-Contains the state of the bridge, payloads are:
+Contains the state of the bridge, this message is published as retained. Payloads are:
 * `online`: published when the bridge is running (on startup)
 * `offline`: published right before the bridge stops
 
@@ -106,7 +109,7 @@ Contains the state of the bridge, payloads are:
 All Zigbee2MQTT logging is published to this topic in the form of `{"level": LEVEL, "message": MESSAGE}`, example: `{"level": "info", "message": "Zigbee: allowing new devices to join."}`.
 
 ## zigbee2mqtt/bridge/devices
-Contains the devices connected to the bridge.
+Contains the devices connected to the bridge, this message is published as retained.
 Whenever a devices joins or leaves this is republished.
 In case `supported` is `false`, `definition` will be `null`.
 Example payload:
@@ -207,7 +210,7 @@ A device definition will always have an `exposes` and `options` property which a
 
 
 ## zigbee2mqtt/bridge/groups
-Contains the groups.
+Contains the groups, this message is published as retained.
 Whenever a group is added/removed or when devices are added/removed from a group this is republished.
 Example payload:
 
@@ -379,6 +382,7 @@ Adds a group. Allowed payloads are `{"friendly_name": NAME, "id": NUMBER}` or `N
 
 Allows you to change the `friendly_name` of a group on the fly. Payload format is `{"from": groupID, "to": groupID}` where groupID can be the `groupID` or `friendly_name` of the group, example: `{"from": "my_group", "to": "my_group_new_name"}`. Response will be `{"data":{"from":"my_group","to":"my_group_new_name"},"status":"ok"}`.
 
+In case you are using Home Assistant discovery and also want to update the entity ID according to this new name, send e.g. `{"from": "my_group", "to": "my_group_new_name","homeassistant_rename":true}`.
 
 #### zigbee2mqtt/bridge/request/group/options
 

@@ -18,11 +18,16 @@ pageClass: device-page
 | Model | ERS-10TZBVK-AA  |
 | Vendor  | TuYa  |
 | Description | Smart knob |
-| Exposes | action, linkquality |
+| Exposes | action, action_step_size, action_transition_time, action_rate, battery, operation_mode, linkquality |
 | Picture | ![TuYa ERS-10TZBVK-AA](https://www.zigbee2mqtt.io/images/devices/ERS-10TZBVK-AA.jpg) |
 
 
 <!-- Notes BEGIN: You can edit here. Add "## Notes" headline if not already present. -->
+
+## Pairing
+To pair, press the reset button on the back until the green LED flashes.
+
+> Note: When you release the reset button, the green LED should keep flashing until the device is paired. If it only flashes a few times and then stops, your battery level is most likely too low (<3v) and you need to replace the battery.
 
 
 <!-- Notes END: Do not edit below this line -->
@@ -45,7 +50,36 @@ simulated_brightness:
 Triggered action (e.g. a button click).
 Value can be found in the published state on the `action` property.
 It's not possible to read (`/get`) or write (`/set`) this value.
-The possible values are: `toggle`, `brightness_step_up`, `brightness_step_down`.
+The possible values are: `toggle`, `brightness_step_up`, `brightness_step_down`, `color_temperature_step_up`, `color_temperature_step_down`, `saturation_move`, `hue_move`, `hue_stop`, `single`, `double`, `hold`, `rotate_left`, `rotate_right`.
+
+### Action_step_size (numeric)
+Value can be found in the published state on the `action_step_size` property.
+It's not possible to read (`/get`) or write (`/set`) this value.
+The minimal value is `0` and the maximum value is `255`.
+
+### Action_transition_time (numeric)
+Value can be found in the published state on the `action_transition_time` property.
+It's not possible to read (`/get`) or write (`/set`) this value.
+The unit of this value is `s`.
+
+### Action_rate (numeric)
+Value can be found in the published state on the `action_rate` property.
+It's not possible to read (`/get`) or write (`/set`) this value.
+The minimal value is `0` and the maximum value is `255`.
+
+### Battery (numeric)
+Remaining battery in %.
+Value can be found in the published state on the `battery` property.
+It's not possible to read (`/get`) or write (`/set`) this value.
+The minimal value is `0` and the maximum value is `100`.
+The unit of this value is `%`.
+
+### Operation_mode (enum)
+Operation mode: "command" - for group control, "event" - for clicks.
+Value can be found in the published state on the `operation_mode` property.
+To read (`/get`) the value publish a message to topic `zigbee2mqtt/FRIENDLY_NAME/get` with payload `{"operation_mode": ""}`.
+To write (`/set`) a value publish a message to topic `zigbee2mqtt/FRIENDLY_NAME/set` with payload `{"operation_mode": NEW_VALUE}`.
+The possible values are: `command`, `event`.
 
 ### Linkquality (numeric)
 Link quality (signal strength).
